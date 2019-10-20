@@ -4,7 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon app.js",
+    "lint": "eslint *.js **/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "pretty-quick --staged",
+      "eslint src/",
+      "git add"
+    ]
   },
   "keywords": [],
   "author": "",
@@ -20,10 +29,6 @@
     "validator": "^11.1.0"
   },
   "devDependencies": {
-    "eslint": "^5.14.1",
-    "eslint-plugin-jsx-a11y": "6.2.1",
-    "eslint-plugin-prettier": "^3.0.1",
-    "nodemon": "1.19.4",
-    "prettier": "^1.16.4"
+    "nodemon": "1.19.4"
   }
 }
