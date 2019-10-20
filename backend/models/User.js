@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const UserSchema = new mongoose.Schema({
+const UserSchema = new Schema({
     email: {
         type: String,
         required: true
@@ -11,6 +12,7 @@ const UserSchema = new mongoose.Schema({
     }
 });
 
-const User = mongoose.model('users', UserSchema);
+// `UserModel` is a "Model", a subclass of `mongoose.Model`.
+const UserModel = mongoose.model('users', UserSchema);
 
-module.exports = User;
+module.exports = UserModel;
