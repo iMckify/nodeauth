@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "mongod": "cd \"C:\\Program Files\\MongoDb\\Server\\4.2\\bin\";.\\mongod --dbpath \"D:\\nodeauth\\backend\\data\"",
     "start": "nodemon app.js",
     "lint": "eslint *.js **/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
