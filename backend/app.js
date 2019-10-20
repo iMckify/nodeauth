@@ -1,9 +1,15 @@
 const express = require('express');
-//const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-//const passport = require('passport');
+const passport = require('passport');
+const config = require('./db');
 
-const app = express();
+mongoose.connect(config.DB, { useNewUrlParser: true }).then(
+    () => {console.log('Database is connected') },
+    err => { console.log('Can not connect to the database'+ err)}
+);
+
+const app = express(); // initiates express app
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
