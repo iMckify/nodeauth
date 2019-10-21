@@ -3,5 +3,5 @@
 // module in Node.js is a functionality.
 // exports is an object that will be exported as a module for using in other files.
 module.exports = {
-    DB: 'mongodb://localhost:27017/auth'
+    DB: 'mongodb://localhost:27017/nodeauthDB'
 }
