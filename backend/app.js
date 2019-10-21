@@ -17,6 +17,13 @@ const app = express(); // initiates express app
 // object (res), and the next middleware function in the application’s request-response cycle
 app.use(passport.initialize());
 
+// CORS
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+})
+
 // puts passport.js config into passport middleware
 require('./passport')(passport);
 
@@ -30,7 +37,7 @@ app.use(bodyParser.json()); // bodyParser.json returns middleware that only pars
 // app.use([path,] callback [, callback...]), where 
 //  callback: (array of) middleware functions
 // mounts callback functions at the specified path
-app.use('/api/users', users);
+app.use('/api/user', users);
 
 // GET requests handler
 app.get('/', function(req, res) {
