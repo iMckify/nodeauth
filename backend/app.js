@@ -3,6 +3,8 @@ const mongoose = require('mongoose'); // ODM(maps obj to Document DB like Mongo)
 const bodyParser = require('body-parser'); // manages HTTP body
 const passport = require('passport'); // auth middleware
 const DBconfig = require('./db').DB; // require() = import statement in React
+const cors = require('cors');
+
 
 const users = require('./routes/userActions'); 
 
@@ -17,12 +19,13 @@ const app = express(); // initiates express app
 // object (res), and the next middleware function in the application’s request-response cycle
 app.use(passport.initialize());
 
-// CORS
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-})
+app.use(cors());
+// CORS no lib
+// app.use((req, res, next) => {
+//     res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, authorization"); // adding "authorization" creates new keep alive http request with error
+//     next();
+// })
 
 // puts passport.js config into passport middleware
 require('./passport')(passport);
