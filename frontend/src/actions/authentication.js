@@ -3,7 +3,7 @@ import jwtDecode from 'jwt-decode';
 import { userLogin, snackbarMessages } from '../utils/constants';
 import { SET_CURRENT_USER, LOGOUT } from './types';
 import setAuthToken from './setAuthToken';
-import { validateInfo } from './usersAction';
+import { validateEmail } from './usersAction';
 
 export const setCurrentUser = decoded => {
   return {
@@ -18,16 +18,27 @@ export const loginUser = (user, openSnackbar, setError) => dispatch => {
     .then(res => {
       localStorage.setItem('jwtToken', res.data);
       setAuthToken(res.data);
-      validateInfo(jwtDecode(res.data).email).then(userData => {
-        dispatch(setCurrentUser(userData));
-      });
+      validateEmail(jwtDecode(res.data).email)
+        .then(userData => {
+          dispatch(setCurrentUser(userData));
+        })
+        .catch(
+          openSnackbar({
+            message: snackbarMessages.loginErrorEmail,
+            variant: 'error'
+          })
+        );
       openSnackbar({
         message: snackbarMessages.loginSuccess,
         variant: 'success'
       });
     })
     .catch(err => {
-      setError(err);
+      const errorData = {
+        Status: err.message.replace(/^\D+/g, ''),
+        Message: snackbarMessages.loginErrorPassword
+      };
+      setError(errorData);
     });
 };
 

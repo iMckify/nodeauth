@@ -9,14 +9,20 @@ import { RegistrationForm } from '../components/registration';
 import { SnackbarContainer } from '../components/snackbar';
 import { snackbarMessages } from '../utils/constants';
 import { logoutUser } from '../actions/authentication';
+import { LoginForm } from '../components/login';
 
 class MainBody extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isOpenRegistrationModal: false,
       snackbarContents: {}
     };
   }
+
+  handleRegistrationOpen = () => {
+    this.setState({ isOpenRegistrationModal: true });
+  };
 
   setError = err => {
     const errors = err
@@ -35,11 +41,22 @@ class MainBody extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
-    const { snackbarContents } = this.state;
+    const { classes, auth } = this.props;
+    const { snackbarContents, isOpenRegistrationModal } = this.state;
     return (
       <Paper className={classes.paper} elevation={24}>
-        <RegistrationForm openSnackbar={this.openSnackbar} setError={this.setError} />
+        <LoginForm
+          IsAdmin={auth.user.isAdmin}
+          className={classes}
+          openRegistration={this.handleRegistrationOpen}
+          openSnackbar={this.openSnackbar}
+          setError={this.setError}
+        />
+        <RegistrationForm
+          openSnackbar={this.openSnackbar}
+          isOpenRegistrationModal={isOpenRegistrationModal}
+          setError={this.setError}
+        />
         <SnackbarContainer
           snackbarContents={snackbarContents}
           handleClose={this.handleSnackbarClose}
@@ -50,7 +67,8 @@ class MainBody extends React.Component {
 }
 
 MainBody.propTypes = {
-  classes: PropTypes.shape().isRequired
+  classes: PropTypes.shape().isRequired,
+  auth: PropTypes.shape().isRequired
 };
 
 const mapStateToProps = state => ({

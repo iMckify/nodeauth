@@ -44,33 +44,33 @@ router.post('/login', (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
 
+    // CRIES FOR BEING CATCHED
     User.findOne({email})
         .then(user => {
             if(!user) {
-                error = 'User not found'
                 return res.status(404).json({
-                    "Status": res.status,
-                    "Message": error
+                    "Status": res.statusCode,
+                    "Message": 'User not found (/login)'
                 });
             }
-            if(passwordValidation(user.password,password) == '') { // password is correct
+            let l_error = passwordValidation(user.password,password);
+            if(l_error == '') { // password is correct
                 const payload = {
-                    id: user.id
+                    id: user.id,
+                    email: user.email // adding email to payload for FE validateInfo(jwtDecode(res.data).email) in authentication.js, because it was undefined -_- LOL
                 }
                 jwt.sign(payload, 'secret', { // puts user.id(payload) into JWT
                     expiresIn: 3600 // 1 hour
                 }, (err, token) => { // callback arrow to handle error
                     if(err) console.error('There is some error in token', err);
                     else { // if payload is put into JWT successfully
-                        res.send(token); //res.json({success: true,token: token});
+                        res.send(token); //res.json({success: true,token: token}); // now pure token received
                     }
                 });
-            }
-            else {
-                error = passwordValidation(user.password,password);
+            } else {
                 return res.status(400).json({
-                    "Status": res.status,
-                    "Message": error
+                    "Status": res.statusCode,
+                    "Message": l_error
                 });
             }
         });
@@ -84,11 +84,12 @@ router.get('/me', passport.authenticate('jwt', { session: false }), (req, res) =
     });
 });
 
+// padariau del FE validateInfo(jwtDecode(res.data).email) in authentication.js
 router.get('/:email', (req, res) => {
 
     User.findOne({ // finds with email
         email: req.params.email // err yra!!!! consolej ziuret po sign up
-    }, function(err, data){
+    }, function(err, data){ // function = projection, if not specified, all fields are returned
         if(err) {
             return res.status(400).json({
                 "Status": res.statusCode,
@@ -97,7 +98,7 @@ router.get('/:email', (req, res) => {
         } else if (!data){
             return res.status(404).json({
                 "Status": res.statusCode,
-                "Message": "User not found"
+                "Message": "User not found (/:email)"
             });
         } else {
             return res.status(200).json({

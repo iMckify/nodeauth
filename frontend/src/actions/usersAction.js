@@ -5,11 +5,11 @@ export const getUserLogin = () => {
   return axios.get(userLogin).then(res => res.data);
 };
 
-export const validateInfo = email => {
+export const validateEmail = email => {
   return axios
     .get(`${getUser}${email}`)
     .then(res => res.data)
     .catch(err => {
-      return err.response.data.Message;
+      return err;
     });
 };
