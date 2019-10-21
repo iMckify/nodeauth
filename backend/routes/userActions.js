@@ -1,31 +1,27 @@
 const router = require('express').Router();
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
-const validateRegisterInput = require('../validation/register');
 const validateLoginInput = require('../validation/login');
 const User = require('../models/User');
 const passwordValidation = require('../validation/password');
 
+// register
+router.post('', function(req, res) {
+    const userData = req.body;
 
-router.post('/register', function(req, res) {
-
-    const { errors, isValid } = validateRegisterInput(req.body);
-
-    if(!isValid) {
-        return res.status(400).json(errors);
-    }
-    User.findOne({ // finds with email
-        email: req.body.email
-    }).then(user => {
+    User.findOne({
+        email: userData.email  // Document.email: req.body.email
+    }).then(user => { // responds with user when it is found
         if(user) {
             return res.status(400).json({
-                email: 'Email already exists'
+                "Status": res.statusCode,
+                "Message": "Email already exists"
             });
         }
         else {
             const newUser = new User({
-                email: req.body.email,
-                password: req.body.password,
+                email: userData.email,
+                password: userData.password,
             });
             
             newUser
@@ -34,15 +30,15 @@ router.post('/register', function(req, res) {
                     res.json(user) // this .then() function only returns resolved Document
                 }); 
         }
-    });
+    })
 });
 
 router.post('/login', (req, res) => {
 
-    const { errors, isValid } = validateLoginInput(req.body);
+    const { error, isValid } = validateLoginInput(req.body);
 
     if(!isValid) {
-        return res.status(400).json(errors);
+        return res.status(400).json(error);
     }
 
     const email = req.body.email;
@@ -51,8 +47,11 @@ router.post('/login', (req, res) => {
     User.findOne({email})
         .then(user => {
             if(!user) {
-                errors.email = 'User not found'
-                return res.status(404).json(errors);
+                error = 'User not found'
+                return res.status(404).json({
+                    "Status": res.status,
+                    "Message": error
+                });
             }
             if(passwordValidation(user.password,password) == '') { // password is correct
                 const payload = {
@@ -63,16 +62,16 @@ router.post('/login', (req, res) => {
                 }, (err, token) => { // callback arrow to handle error
                     if(err) console.error('There is some error in token', err);
                     else { // if payload is put into JWT successfully
-                        res.json({
-                            success: true,
-                            token: `Bearer ${token}`
-                        });
+                        res.send(token); //res.json({success: true,token: token});
                     }
                 });
             }
             else {
-                errors.password = passwordValidation(user.password,password);
-                return res.status(400).json(errors);
+                error = passwordValidation(user.password,password);
+                return res.status(400).json({
+                    "Status": res.status,
+                    "Message": error
+                });
             }
         });
 });
@@ -82,6 +81,30 @@ router.get('/me', passport.authenticate('jwt', { session: false }), (req, res) =
     return res.json({
         id: req.user.id,
         email: req.user.email
+    });
+});
+
+router.get('/:email', (req, res) => {
+
+    User.findOne({ // finds with email
+        email: req.params.email // err yra!!!! consolej ziuret po sign up
+    }, function(err, data){
+        if(err) {
+            return res.status(400).json({
+                "Status": res.statusCode,
+                "Message": "Unexpected error"
+            });
+        } else if (!data){
+            return res.status(404).json({
+                "Status": res.statusCode,
+                "Message": "User not found"
+            });
+        } else {
+            return res.status(200).json({
+                _id: data._id,
+                email: data.email
+            });
+        }
     });
 });
 
