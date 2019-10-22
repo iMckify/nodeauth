@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import '@babel/polyfill';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
