@@ -1,8 +1,8 @@
 export const errorMessages = {
-  emailError: 'Requires valid email',
-  password: 'Password must contain at least 8 symbols',
-  confirmPasswordError: 'Confirm password must be the same as password',
-  isEmptyEmail: 'Email is required',
-  isEmptyPassword: 'Password is required',
-  isEmptyConfirmPassword: 'Confirm password is required'
+  validEmail: 'Requires valid email',
+  passwordLength: 'Password must contain at least 8 symbols',
+  confirmPasswordLengthError: 'Confirm password must be the same as password',
+  isRequiredEmail: 'Email is required',
+  isRequiredPassword: 'Password is required',
+  isRequiredConfirmPassword: 'Confirm password is required'
 };

@@ -3,10 +3,10 @@ import { errorMessages } from '../constants';
 export const emailValidation = email => {
   if (email.length !== 0) {
     if (email.indexOf('@') === -1 || email.indexOf('.') === -1 || email.length > 128) {
-      return errorMessages.emailError;
+      return errorMessages.validEmail;
     }
   } else {
-    return errorMessages.isEmptyEmail;
+    return errorMessages.isRequiredPassword;
   }
   return '';
 };
@@ -14,10 +14,10 @@ export const emailValidation = email => {
 export const passwordValidation = password => {
   if (password.length !== 0) {
     if (password.length < 8 || password.length > 255) {
-      return errorMessages.password;
+      return errorMessages.passwordLength;
     }
   } else {
-    return errorMessages.isEmptyPassword;
+    return errorMessages.isRequiredPassword;
   }
   return '';
 };
@@ -25,10 +25,10 @@ export const passwordValidation = password => {
 export const confirmPasswordValidation = (password, confirmPassword) => {
   if (confirmPassword.length !== 0) {
     if (confirmPassword !== password) {
-      return errorMessages.confirmPasswordError;
+      return errorMessages.confirmPasswordLengthError;
     }
   } else {
-    return errorMessages.isEmptyConfirmPassword;
+    return errorMessages.isRequiredPassword;
   }
   return '';
 };
