@@ -5,11 +5,24 @@ import Form from './Form';
 import Styles from './Styles';
 
 function RegistrationForm(props) {
-  const { classes, openSnackbar, setError } = props;
+  const { classes, openSnackbar, setError, switchWindow, hover, switchHover } = props;
+  const login = 'Already have an account?';
+
   return (
     <div className={classes.paper}>
-      <div className={classes.registration}>Sign Up</div>
+      <div className={classes.container}>Sign Up</div>
       <Form classes={classes} setError={setError} openSnackbar={openSnackbar} />
+      <div
+        role="button"
+        onClick={() => {
+          switchWindow();
+        }}
+        className={hover ? classes.button2 : classes.button1}
+        onMouseEnter={switchHover}
+        onMouseLeave={switchHover}
+      >
+        {login}
+      </div>
     </div>
   );
 }
@@ -17,7 +30,10 @@ function RegistrationForm(props) {
 RegistrationForm.propTypes = {
   classes: PropTypes.shape().isRequired,
   openSnackbar: PropTypes.func.isRequired,
-  setError: PropTypes.func.isRequired
+  switchWindow: PropTypes.func.isRequired,
+  setError: PropTypes.func.isRequired,
+  hover: PropTypes.bool.isRequired,
+  switchHover: PropTypes.func.isRequired
 };
 
 export default withStyles(Styles)(RegistrationForm);

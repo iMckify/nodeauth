@@ -15,13 +15,20 @@ class MainBody extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpenRegistrationModal: false,
+      window: false,
+      hover: false,
       snackbarContents: {}
     };
   }
 
-  handleRegistrationOpen = () => {
-    this.setState({ isOpenRegistrationModal: true });
+  switchHover = () => {
+    const { hover } = this.state;
+    this.setState({ hover: !hover });
+  };
+
+  switchWindow = () => {
+    const { window, hover } = this.state;
+    this.setState({ window: !window, hover: !hover });
   };
 
   setError = err => {
@@ -42,21 +49,27 @@ class MainBody extends React.Component {
 
   render() {
     const { classes, auth } = this.props;
-    const { snackbarContents, isOpenRegistrationModal } = this.state;
+    const { snackbarContents, window, hover } = this.state;
     return (
       <Paper className={classes.paper} elevation={24}>
-        <LoginForm
-          IsAdmin={auth.user.isAdmin}
-          className={classes}
-          openRegistration={this.handleRegistrationOpen}
-          openSnackbar={this.openSnackbar}
-          setError={this.setError}
-        />
-        <RegistrationForm
-          openSnackbar={this.openSnackbar}
-          isOpenRegistrationModal={isOpenRegistrationModal}
-          setError={this.setError}
-        />
+        {window ? (
+          <RegistrationForm
+            setError={this.setError}
+            openSnackbar={this.openSnackbar}
+            switchWindow={this.switchWindow}
+            switchHover={this.switchHover}
+            hover={hover}
+          />
+        ) : (
+          <LoginForm
+            IsAdmin={auth.user.isAdmin}
+            setError={this.setError}
+            openSnackbar={this.openSnackbar}
+            switchWindow={this.switchWindow}
+            switchHover={this.switchHover}
+            hover={hover}
+          />
+        )}
         <SnackbarContainer
           snackbarContents={snackbarContents}
           handleClose={this.handleSnackbarClose}
