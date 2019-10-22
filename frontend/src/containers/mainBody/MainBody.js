@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 import Styles from './Styles';
-import { RegistrationForm } from '../components/registration';
-import { SnackbarContainer } from '../components/snackbar';
-import { snackbarMessages } from '../utils/constants';
-import { logoutUser } from '../actions/authentication';
-import { LoginForm } from '../components/login';
+import { SnackbarContainer } from '../../components/snackbar';
+import { snackbarMessages } from '../../utils/constants';
+import { logoutUser } from '../../actions/authentication';
+import { Window } from '../window';
 
 class MainBody extends React.Component {
   constructor(props) {
@@ -28,6 +28,13 @@ class MainBody extends React.Component {
   switchWindow = () => {
     const { window, hover } = this.state;
     this.setState({ window: !window, hover: !hover });
+  };
+
+  handleLogout = e => {
+    e.preventDefault();
+    const { logoutUserProp } = this.props;
+    logoutUserProp();
+    this.openSnackbar({ message: snackbarMessages.logoutSuccess, variant: 'neutral' });
   };
 
   setError = err => {
@@ -50,18 +57,22 @@ class MainBody extends React.Component {
     const { classes, auth } = this.props;
     const { snackbarContents, window, hover } = this.state;
     return (
-      <Paper className={classes.paper} elevation={24}>
-        {window ? (
-          <RegistrationForm
-            setError={this.setError}
-            openSnackbar={this.openSnackbar}
-            switchWindow={this.switchWindow}
-            switchHover={this.switchHover}
-            hover={hover}
-          />
+      <Paper className={classes.outerPaper} elevation={24}>
+        {auth.isAuthenticated ? (
+          <div className={classes.innerPaper}>
+            <div className={classes.email}>Hello. {auth.user.email}!</div>
+            <Button
+              className={classes.button}
+              variant="outlined"
+              onClick={e => this.handleLogout(e)}
+            >
+              Logout
+            </Button>
+          </div>
         ) : (
-          <LoginForm
-            IsAdmin={auth.user.isAdmin}
+          <Window
+            window={window}
+            IsAdmin={auth.user.isAdmin !== undefined ? auth.user.isAdmin : false}
             setError={this.setError}
             openSnackbar={this.openSnackbar}
             switchWindow={this.switchWindow}
@@ -80,7 +91,8 @@ class MainBody extends React.Component {
 
 MainBody.propTypes = {
   classes: PropTypes.shape().isRequired,
-  auth: PropTypes.shape().isRequired
+  auth: PropTypes.shape().isRequired,
+  logoutUserProp: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
