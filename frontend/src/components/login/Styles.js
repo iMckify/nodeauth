@@ -1,4 +1,10 @@
-const modalStyles = theme => ({
+const styles = theme => ({
+  container: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#3f51b5',
+    textAlign: 'center'
+  },
   paper: {
     position: 'absolute',
     backgroundColor: theme.palette.background.paper,
@@ -6,18 +12,23 @@ const modalStyles = theme => ({
     padding: theme.spacing.unit * 4,
     outline: 'none',
     height: '80vh%',
-    width: '10vw',
+    width: '20vw',
     top: '64px',
-    left: `${80}%`
+    left: `${40}%`
+  },
+  textFields: {
+    width: '20vw',
+    height: '5vh',
+    marginTop: '3vh'
   },
   button: {
-    marginTop: '1vh'
+    marginTop: '2vh'
   },
   button1: {
     marginTop: '1vh',
     fontSize: 14,
     color: '#551A8B',
-    width: '10vw',
+    width: '20vw',
     textDecoration: 'underline',
     textTransform: 'none'
   },
@@ -26,32 +37,15 @@ const modalStyles = theme => ({
     marginTop: '1vh',
     fontSize: 14,
     color: '#551A8B',
-    width: '10vw',
+    width: '20vw',
     textDecoration: 'underline',
     textTransform: 'none',
     fontWeight: 'bold'
   },
-  color: {
-    fontSize: 14,
-    color: '#551A8B'
-  },
-  signUp: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#3f51b5',
-    textAlign: 'center',
-    marginTop: '0vh',
-    marginBot: '0vh'
-  },
   layout: {
     fontSize: 18,
-    color: '#3f51b5'
-  },
-  textFields: {
-    fontSize: 15,
-    fontWeight: 'bold',
     color: '#3f51b5'
   }
 });
 
-export default modalStyles;
+export default styles;

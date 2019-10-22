@@ -44,7 +44,7 @@ class Form extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const { onSubmit, passClose } = this.props;
+    const { onSubmit } = this.props;
     const { email, password, passwordError, emailError } = this.state;
     const userData = {
       email,
@@ -52,20 +52,21 @@ class Form extends Component {
     };
     if (!notEmpty(emailError) && !notEmpty(passwordError)) {
       onSubmit(userData);
-      passClose();
     }
   };
 
   render() {
     const { email, password, emailError, passwordError, disable } = this.state;
+    const { classes } = this.props;
 
     const labelNames = {
       password: 'password'
     };
 
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit} className={classes.layout}>
         <TextField
+          className={classes.textFields}
           name="email"
           label="Email"
           value={email}
@@ -76,6 +77,7 @@ class Form extends Component {
           margin="normal"
         />
         <TextField
+          className={classes.textFields}
           name={labelNames.password}
           label="Password"
           type={labelNames.password}
@@ -86,7 +88,7 @@ class Form extends Component {
           helperText={passwordError}
           margin="normal"
         />
-        <Button disabled={disable} variant="outlined" type="submit">
+        <Button className={classes.button} disabled={disable} variant="outlined" type="submit">
           Log in
         </Button>
       </form>
@@ -96,7 +98,7 @@ class Form extends Component {
 
 Form.propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  passClose: PropTypes.func.isRequired
+  classes: PropTypes.shape().isRequired
 };
 
 export default Form;

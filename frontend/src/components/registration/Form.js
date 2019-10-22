@@ -96,52 +96,48 @@ class Form extends Component {
     };
 
     return (
-      <div className={classes.layout}>
-        <form onSubmit={this.handleSubmit}>
-          <TextField
-            className={classes.textFields}
-            name={labelNames.email}
-            label="Email"
-            type={labelNames.email}
-            value={email}
-            error={!isEmpty(emailError)}
-            onChange={this.handleChange}
-            onBlur={e => this.validate(e, emailValidation)}
-            helperText={emailError}
-            margin="normal"
-          />
-          <TextField
-            className={classes.textFields}
-            name={labelNames.password}
-            label="Password"
-            type={labelNames.password}
-            value={password}
-            error={!isEmpty(passwordError)}
-            onChange={this.handleChange}
-            onBlur={e => this.validate(e, passwordValidation)}
-            helperText={passwordError}
-            margin="normal"
-          />
-          <TextField
-            className={classes.textFields}
-            name={labelNames.confirmPassword}
-            label="Confirm Password"
-            type={labelNames.password}
-            value={confirmPassword}
-            error={!isEmpty(confirmPasswordError)}
-            onChange={this.handleChange}
-            onBlur={e => this.confirmPasswordValidate(e, confirmPasswordValidation)}
-            helperText={confirmPasswordError}
-            margin="normal"
-          />
-          <div />
-          <div className={classes.button}>
-            <Button className={classes.button} disabled={disable} variant="outlined" type="submit">
-              Sign up
-            </Button>
-          </div>
-        </form>
-      </div>
+      <form onSubmit={this.handleSubmit} className={classes.layout}>
+        <TextField
+          className={classes.textFields}
+          name={labelNames.email}
+          label="Email"
+          type={labelNames.email}
+          value={email}
+          error={!isEmpty(emailError)}
+          onChange={this.handleChange}
+          onBlur={e => this.validate(e, emailValidation)}
+          helperText={emailError}
+          margin="normal"
+        />
+        <TextField
+          className={classes.textFields}
+          name={labelNames.password}
+          label="Password"
+          type={labelNames.password}
+          value={password}
+          error={!isEmpty(passwordError)}
+          onChange={this.handleChange}
+          onBlur={e => this.validate(e, passwordValidation)}
+          helperText={passwordError}
+          margin="normal"
+        />
+        <TextField
+          className={classes.textFields}
+          name={labelNames.confirmPassword}
+          label="Confirm Password"
+          type={labelNames.password}
+          value={confirmPassword}
+          error={!isEmpty(confirmPasswordError)}
+          onChange={this.handleChange}
+          onBlur={e => this.confirmPasswordValidate(e, confirmPasswordValidation)}
+          helperText={confirmPasswordError}
+          margin="normal"
+        />
+        <div />
+        <Button className={classes.button} disabled={disable} variant="outlined" type="submit">
+          Sign up
+        </Button>
+      </form>
     );
   }
 }
