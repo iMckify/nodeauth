@@ -3,12 +3,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
 import Styles from './Styles';
 import { SnackbarContainer } from '../../components/snackbar';
 import { snackbarMessages } from '../../utils/constants';
 import { logoutUser } from '../../actions/authentication';
-import { Window } from '../window';
+import { Window } from '../containerWindow';
 
 class MainBody extends React.Component {
   constructor(props) {
@@ -57,29 +56,17 @@ class MainBody extends React.Component {
     const { classes, auth } = this.props;
     const { snackbarContents, window, hover } = this.state;
     return (
-      <Paper className={classes.outerPaper} elevation={24}>
-        {auth.isAuthenticated ? (
-          <div className={classes.innerPaper}>
-            <div className={classes.email}>Hello. {auth.user.email}!</div>
-            <Button
-              className={classes.button}
-              variant="outlined"
-              onClick={e => this.handleLogout(e)}
-            >
-              Logout
-            </Button>
-          </div>
-        ) : (
-          <Window
-            window={window}
-            IsAdmin={auth.user.isAdmin !== undefined ? auth.user.isAdmin : false}
-            setError={this.setError}
-            openSnackbar={this.openSnackbar}
-            switchWindow={this.switchWindow}
-            switchHover={this.switchHover}
-            hover={hover}
-          />
-        )}
+      <Paper className={classes.paper} elevation={24}>
+        <Window
+          window={window}
+          auth={auth}
+          handleLogout={this.handleLogout}
+          setError={this.setError}
+          openSnackbar={this.openSnackbar}
+          switchWindow={this.switchWindow}
+          switchHover={this.switchHover}
+          hover={hover}
+        />
         <SnackbarContainer
           snackbarContents={snackbarContents}
           handleClose={this.handleSnackbarClose}
