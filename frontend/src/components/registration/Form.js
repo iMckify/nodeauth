@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { registerUser } from '../../actions/authentication';
 import { snackbarMessages, userRegister } from '../../utils/constants';
 import {
   emailValidation,
@@ -55,26 +56,12 @@ class Form extends Component {
     e.preventDefault();
     const { email, password, emailError, passwordError, confirmPasswordError } = this.state;
     const { openSnackbar, setError, switchWindow } = this.props;
-
-    const data = {
+    const userData = {
       email,
       password
     };
-    // iskelti is components
     if (isEmpty(emailError) && isEmpty(passwordError) && isEmpty(confirmPasswordError)) {
-      axios
-        .post(userRegister, data)
-        .then(() => {
-          openSnackbar({ message: snackbarMessages.registrationSuccess, variant: 'success' });
-          switchWindow();
-        })
-        .catch(err => {
-          const errorData = {
-            Status: err.message.replace(/^\D+/g, ''),
-            Message: err.message.substring(0, err.message.indexOf('with status code'))
-          };
-          setError(errorData);
-        });
+      registerUser(userData, openSnackbar, setError, switchWindow);
     }
   };
 

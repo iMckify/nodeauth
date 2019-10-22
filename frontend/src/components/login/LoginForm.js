@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
-import { loginUser } from '../../actions/authentication';
 import Form from './Form';
 import Styles from './Styles';
+import { loginUser } from '../../actions/authentication';
 
 function LoginForm(props) {
   const {

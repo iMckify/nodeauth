@@ -1,6 +1,6 @@
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
-import { userLogin, snackbarMessages } from '../utils/constants';
+import { userLogin, userRegister, snackbarMessages } from '../utils/constants';
 import { SET_CURRENT_USER, LOGOUT } from './types';
 import setAuthToken from './setAuthToken';
 import { validateEmail } from './usersAction';
@@ -18,16 +18,9 @@ export const loginUser = (user, openSnackbar, setError) => dispatch => {
     .then(res => {
       localStorage.setItem('jwtToken', res.data);
       setAuthToken(res.data);
-      validateEmail(jwtDecode(res.data).email)
-        .then(userData => {
-          dispatch(setCurrentUser(userData));
-        })
-        .catch(
-          openSnackbar({
-            message: snackbarMessages.loginErrorEmail,
-            variant: 'error'
-          })
-        );
+      validateEmail(jwtDecode(res.data).email).then(userData => {
+        dispatch(setCurrentUser(userData));
+      });
       openSnackbar({
         message: snackbarMessages.loginSuccess,
         variant: 'success'
@@ -35,8 +28,8 @@ export const loginUser = (user, openSnackbar, setError) => dispatch => {
     })
     .catch(err => {
       const errorData = {
-        Status: err.message.replace(/^\D+/g, ''),
-        Message: snackbarMessages.loginErrorPassword
+        Status: err.response.status,
+        Message: err.response.data.Message // for client message use snackbarMessages.loginError
       };
       setError(errorData);
     });
@@ -46,4 +39,20 @@ export const logoutUser = dispatch => {
   localStorage.removeItem('jwtToken');
   setAuthToken(false);
   dispatch({ type: LOGOUT });
+};
+
+export const registerUser = (user, openSnackbar, setError, switchWindow) => {
+  axios
+    .post(userRegister, user)
+    .then(() => {
+      openSnackbar({ message: snackbarMessages.registrationSuccess, variant: 'success' });
+      switchWindow();
+    })
+    .catch(err => {
+      const errorData = {
+        Status: err.response.status,
+        Message: err.message.substring(0, err.message.indexOf('with status code'))
+      };
+      setError(errorData);
+    });
 };
