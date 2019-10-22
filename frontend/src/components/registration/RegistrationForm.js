@@ -11,7 +11,12 @@ function RegistrationForm(props) {
   return (
     <div className={classes.paper}>
       <div className={classes.container}>Sign Up</div>
-      <Form classes={classes} setError={setError} openSnackbar={openSnackbar} />
+      <Form
+        classes={classes}
+        setError={setError}
+        openSnackbar={openSnackbar}
+        switchWindow={switchWindow}
+      />
       <div
         role="button"
         onClick={() => {

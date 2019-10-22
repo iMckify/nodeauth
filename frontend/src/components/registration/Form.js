@@ -54,7 +54,7 @@ class Form extends Component {
   handleSubmit = e => {
     e.preventDefault();
     const { email, password, emailError, passwordError, confirmPasswordError } = this.state;
-    const { openSnackbar, setError } = this.props;
+    const { openSnackbar, setError, switchWindow } = this.props;
 
     const data = {
       email,
@@ -66,6 +66,7 @@ class Form extends Component {
         .post(userRegister, data)
         .then(() => {
           openSnackbar({ message: snackbarMessages.registrationSuccess, variant: 'success' });
+          switchWindow();
         })
         .catch(err => {
           const errorData = {
@@ -145,7 +146,8 @@ class Form extends Component {
 Form.propTypes = {
   openSnackbar: PropTypes.func.isRequired,
   classes: PropTypes.shape().isRequired,
-  setError: PropTypes.func.isRequired
+  setError: PropTypes.func.isRequired,
+  switchWindow: PropTypes.func.isRequired
 };
 
 export default Form;
