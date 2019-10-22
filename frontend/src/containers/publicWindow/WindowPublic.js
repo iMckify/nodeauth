@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { RegistrationForm } from '../../components/registration';
 import { LoginForm } from '../../components/login';
 
-function Window(props) {
+function WindowPublic(props) {
   const { window, IsAdmin, setError, openSnackbar, switchWindow, switchHover, hover } = props;
   if (window) {
     return (
@@ -28,7 +28,7 @@ function Window(props) {
   );
 }
 
-Window.propTypes = {
+WindowPublic.propTypes = {
   window: PropTypes.bool.isRequired,
   IsAdmin: PropTypes.bool.isRequired,
   setError: PropTypes.func.isRequired,
@@ -38,4 +38,4 @@ Window.propTypes = {
   switchHover: PropTypes.func.isRequired
 };
 
-export default Window;
+export default WindowPublic;
