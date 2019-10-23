@@ -1,7 +1,0 @@
-language: node_js
-node_js:
-  - "stable"
-before_install:
-  - cd ./
-script: npm run test
-
