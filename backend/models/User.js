@@ -12,7 +12,6 @@ const UserSchema = new Schema({
     }
 });
 
-// `UserModel` is a "Model", a subclass of `mongoose.Model`.
 const UserModel = mongoose.model('users', UserSchema);
 
 module.exports = UserModel;

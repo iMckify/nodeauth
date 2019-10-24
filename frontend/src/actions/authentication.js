@@ -29,7 +29,7 @@ export const loginUser = (user, openSnackbar, setError) => dispatch => {
     .catch(err => {
       const errorData = {
         Status: err.response.status,
-        Message: err.response.data.Message // for message set in client use snackbarMessages.loginError
+        Message: err.response.data.Message
       };
       setError(errorData);
     });
@@ -51,7 +51,7 @@ export const registerUser = (user, openSnackbar, setError, switchWindow) => {
     .catch(err => {
       const errorData = {
         Status: err.response.status,
-        Message: err.response.data.Message // for message set in client use snackbarMessages.registrationError
+        Message: err.response.data.Message
       };
       setError(errorData);
     });

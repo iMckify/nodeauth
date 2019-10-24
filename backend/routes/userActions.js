@@ -5,13 +5,12 @@ const validateLoginInput = require('../validation/login');
 const User = require('../models/User');
 const passwordValidation = require('../validation/password');
 
-// register
 router.post('', function(req, res) {
     const userData = req.body;
 
     User.findOne({
-        email: userData.email  // Document.email: req.body.email
-    }).then(user => { // responds with user when it is found
+        email: userData.email
+    }).then(user => {
         if(user) {
             return res.status(400).json({
                 "Status": res.statusCode,
@@ -25,9 +24,9 @@ router.post('', function(req, res) {
             });
             
             newUser
-                .save() // updates document
-                .then(user => { // .then() returns Promise (resolved obj value or reason that it's not resolved)
-                    res.json(user) // this .then() function only returns resolved Document
+                .save()
+                .then(user => {
+                    res.json(user)
                 }); 
         }
     })
@@ -44,7 +43,6 @@ router.post('/login', (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
 
-    // CRIES FOR BEING CATCHED
     User.findOne({email})
         .then(user => {
             if(!user) {
@@ -54,17 +52,17 @@ router.post('/login', (req, res) => {
                 });
             }
             let l_error = passwordValidation(user.password,password);
-            if(l_error == '') { // password is correct
+            if(l_error == '') {
                 const payload = {
                     id: user.id,
-                    email: user.email // adding email to payload for FE validateInfo(jwtDecode(res.data).email) in authentication.js, because it was undefined -_- LOL
+                    email: user.email
                 }
-                jwt.sign(payload, 'secret', { // puts user.id(payload) into JWT
-                    expiresIn: 3600 // 1 hour
-                }, (err, token) => { // callback arrow to handle error
+                jwt.sign(payload, 'secret', {
+                    expiresIn: 3600
+                }, (err, token) => {
                     if(err) console.error('There is some error in token', err);
-                    else { // if payload is put into JWT successfully
-                        res.send(token); //res.json({success: true,token: token}); // now pure token received
+                    else {
+                        res.send(token);
                     }
                 });
             } else {
@@ -75,8 +73,7 @@ router.post('/login', (req, res) => {
             }
         });
 });
-//                   !!! Session
-// authenticate(strategy, options: passport.AuthenticateOptions, callback?)
+
 router.get('/me', passport.authenticate('jwt', { session: false }), (req, res) => {
     return res.json({
         id: req.user.id,
