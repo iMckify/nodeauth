@@ -1,9 +1,6 @@
 module.exports = {
   extends: ['airbnb', 'prettier'],
   parser: 'babel-eslint',
-  env: {
-    jest: true
-  },
   plugins: ['prettier'],
   rules: {
     'react/jsx-filename-extension': 'off',
@@ -20,7 +17,5 @@ module.exports = {
     document: 'writeable',
     window: 'writeable',
     localStorage: true,
-    FileReader: 'FileReader',
-    btoa: 'btoa'
   }
 };
